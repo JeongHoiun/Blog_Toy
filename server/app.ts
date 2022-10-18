@@ -1,19 +1,13 @@
 import express, { Request, Response, NextFunction } from 'express';
 import mysql from 'mysql'
 import { mysqlConn } from './config/database.js';
+import account from './src/account';
 
-const connection = mysql.createConnection(mysqlConn);
-
+export const connection = mysql.createConnection(mysqlConn);
 
 const app = express();
 
-app.get('/', (req: Request, res: Response, next: NextFunction) => {
-  connection.query('SELECT * from Users',(error, rows) => {
-    if (error) throw error;
-    console.log('User info is: ', rows);
-    res.send(rows);
-  });
-});
+app.use('/account', account);
 
 app.listen('1234', () => {
     console.log(`
@@ -22,3 +16,5 @@ app.listen('1234', () => {
   ################################################
 `);
 });
+
+export default app;
